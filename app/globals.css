@@ -1,0 +1,75 @@
+/* ===== IMPORTS & DEPENDENCIES ===== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== CONFIGURATION & CONSTANTS ===== */
+/* --- Font Face Declaration for IRANYekanX --- */
+@font-face { font-family: 'IRANYekanX'; font-style: normal; font-weight: 100; src: url('/fonts/IRANYekanX-Thin.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'IRANYekanX'; font-style: normal; font-weight: 200; src: url('/fonts/IRANYekanX-UltraLight.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'IRANYekanX'; font-style: normal; font-weight: 300; src: url('/fonts/IRANYekanX-Light.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'IRANYekanX'; font-style: normal; font-weight: 400; src: url('/fonts/IRANYekanX-Regular.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'IRANYekanX'; font-style: normal; font-weight: 500; src: url('/fonts/IRANYekanX-Medium.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'IRANYekanX'; font-style: normal; font-weight: 700; src: url('/fonts/IRANYekanX-Bold.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'IRANYekanX'; font-style: normal; font-weight: 800; src: url('/fonts/IRANYekanX-ExtraBold.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'IRANYekanX'; font-style: normal; font-weight: 900; src: url('/fonts/IRANYekanX-Black.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'IRANYekanX'; font-style: normal; font-weight: 950; src: url('/fonts/IRANYekanX-ExtraBlack.woff2') format('woff2'); font-display: swap; }
+
+/* ===== CORE STYLES ===== */
+@layer base {
+  :root {
+    --background: 220 20% 97%; /* Light Theme: Off-white with a hint of blue */
+    --foreground: 222.2 84% 4.9%; /* Dark blue text */
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71.4% 4.1%; /* Dark Theme: Rich dark blue */
+    --foreground: 210 40% 98%; /* Light gray text */
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --border: 217.2 32.6% 17.5%;
+    --radius: 0.5rem;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    scroll-behavior: smooth;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+}
+
+/* ===== COMPONENT STYLES ===== */
+@layer components {
+  /* Unified Glassmorphism Style */
+  .glass-ui {
+    @apply bg-white/10 dark:bg-black/20 backdrop-blur-lg border border-white/20;
+  }
+  
+  /* Theme-aware Swiper Styles */
+  .swiper-pagination-bullet {
+    background-color: hsla(var(--foreground), 0.5) !important;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: hsl(var(--foreground)) !important;
+    opacity: 1;
+    width: 24px !important;
+    border-radius: 8px !important;
+  }
+  
+  .swiper-button-next, .swiper-button-prev {
+    color: hsl(var(--foreground)) !important;
+    opacity: 0.5;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .swiper-button-next:hover, .swiper-button-prev:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}

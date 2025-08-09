@@ -1,0 +1,40 @@
+// ===== TYPESCRIPT CONFIGURATION =====
+// This file configures the TypeScript compiler for a Next.js project.
+// It sets up rules for module resolution, JSX handling, path aliases, and strictness.
+{
+  "compilerOptions": {
+    // --- Type Checking ---
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+
+    // --- Module Resolution ---
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    // --- JSX Handling (CRITICAL FIX for 'Cannot use JSX' error) ---
+    "jsx": "preserve",
+
+    // --- Path Aliases (CRITICAL FIX for '@/' error) ---
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    },
+
+    // --- Framework-Specific ---
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "incremental": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
