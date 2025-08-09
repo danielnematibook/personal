@@ -4,14 +4,13 @@ const plugin = require("tailwindcss/plugin");
 
 // ===== CONFIGURATION & CONSTANTS =====
 const config: Config = {
-  darkMode: "class", // FIX: Changed from ["class"] to "class"
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    // ... rest of the file remains the same
     container: {
       center: true,
       padding: "2rem",
@@ -61,6 +60,7 @@ const config: Config = {
   },
   plugins: [
     require("tailwindcss-animate"),
+    // This plugin is correctly configured.
     plugin(function({ addUtilities, theme }: { addUtilities: any, theme: any }) {
       const glowUtilities = {
         '.text-glow-instagram': { textShadow: '0 0 10px #E1306C, 0 0 20px #E1306C' },

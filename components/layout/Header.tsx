@@ -2,7 +2,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion"; // Import LayoutGroup
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { usePathname } from 'next/navigation';
@@ -35,24 +35,20 @@ const NavItem = ({ href, name }: { href: string; name:string }) => {
   );
 };
 
-// ===== --- ELEGANT & REDESIGNED Animated Theme Toggle Button --- =====
+// ===== Theme Toggle Button (Stable) =====
 const ThemeToggleButton = () => {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => setMounted(true), []);
 
-    if (!mounted) {
-        return <div className="w-16 h-8" />;
-    }
+    if (!mounted) return <div className="w-16 h-8" />;
 
     const isDark = theme === 'dark';
     const toggleTheme = () => setTheme(isDark ? 'light' : 'dark');
-    
     const spring = { type: "spring", stiffness: 500, damping: 35 };
 
     return (
-        // FIX #1: Isolate this component's animation from the nav underline
         <LayoutGroup>
             <div
                 onClick={toggleTheme}
@@ -64,9 +60,7 @@ const ThemeToggleButton = () => {
                     className="w-6 h-6 rounded-full flex items-center justify-center shadow-lg"
                     layout
                     transition={spring}
-                    style={{
-                      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.4)'
-                    }}
+                    style={{ backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.4)' }}
                 >
                     <AnimatePresence mode="wait" initial={false}>
                         <motion.div
@@ -76,11 +70,7 @@ const ThemeToggleButton = () => {
                             exit={{ y: 20, opacity: 0, rotate: 90 }}
                             transition={{ duration: 0.2 }}
                         >
-                            {isDark ? (
-                                <Moon size={14} className="text-slate-200" />
-                            ) : (
-                                <Sun size={14} className="text-yellow-600" />
-                            )}
+                            {isDark ? ( <Moon size={14} className="text-slate-200" /> ) : ( <Sun size={14} className="text-yellow-600" /> )}
                         </motion.div>
                     </AnimatePresence>
                 </motion.div>
@@ -101,23 +91,27 @@ const Header = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  // Animation variants
   const topBarVariants = { open: { top: "50%", rotate: 135, y: "-50%" }, closed: { top: "0%", rotate: 0, y: "0%" } };
   const middleBarVariants = { open: { opacity: 0 }, closed: { opacity: 1 } };
   const bottomBarVariants = { open: { top: "50%", rotate: -135, y: "-50%" }, closed: { top: "100%", rotate: 0, y: "-100%" } };
-  
   const mobileMenuVariants = { hidden: { x: "100%" }, visible: { x: "0%" } };
   const mobileLinkVariants = { hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } };
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 py-4 px-6 md:px-12 glass-ui">
-        <div className="container mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl md:text-2xl font-bold tracking-wider text-royal-gold">
+      {/* --- FINAL POLISHED HEADER --- */}
+      {/* Now floats, has margin, and is fully rounded */}
+      <header className="fixed top-4 inset-x-4 z-50 glass-ui rounded-2xl">
+        <div className="container mx-auto flex items-center justify-between h-14 px-4">
+          
+          {/* Left Side: Logo */}
+          <Link href="/" className="flex items-center text-xl md:text-2xl font-bold tracking-wider text-royal-gold">
             DANIEL NEMATI
           </Link>
           
-          <nav className="hidden md:flex items-center justify-center">
-            {/* FIX #1: Isolate nav underline animation */}
+          {/* Center: Desktop Navigation */}
+          <nav className="hidden md:flex items-center justify-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <LayoutGroup>
               <ul className="flex items-center gap-x-2 lg:gap-x-4">
                 {navLinks.map((link) => (
@@ -129,11 +123,11 @@ const Header = () => {
             </LayoutGroup>
           </nav>
           
-          {/* FIX #3: Ensure vertical alignment for mobile icons */}
-          <div className="flex items-center gap-4 h-8">
+          {/* Right Side: Icons */}
+          <div className="flex items-center justify-end gap-4">
             <ThemeToggleButton />
             
-            <div className="md:hidden z-50 flex items-center h-full">
+            <div className="md:hidden flex items-center justify-center w-8 h-8">
               <button onClick={toggleMenu} className="relative w-[30px] h-[22px]" aria-label="Toggle menu">
                 <motion.div className="absolute left-0 w-full h-[3px] bg-foreground rounded-full" variants={topBarVariants} animate={isOpen ? "open" : "closed"} />
                 <motion.div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[3px] bg-foreground rounded-full" variants={middleBarVariants} animate={isOpen ? "open" : "closed"} />
@@ -144,7 +138,7 @@ const Header = () => {
         </div>
       </header>
 
-      {/* --- Mobile Menu --- */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div className="fixed inset-0 z-40 md:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
