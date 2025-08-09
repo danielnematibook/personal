@@ -2,7 +2,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion"; // Import LayoutGroup
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { usePathname } from 'next/navigation';
@@ -52,42 +52,45 @@ const ThemeToggleButton = () => {
     const spring = { type: "spring", stiffness: 500, damping: 35 };
 
     return (
-        <div
-            onClick={toggleTheme}
-            className={`flex items-center w-16 h-8 p-1 rounded-full cursor-pointer relative transition-colors duration-300 ease-in-out ${
-                isDark ? 'bg-royal-blue-dark/50 justify-end' : 'bg-yellow-400/50 justify-start'
-            }`}
-        >
-            <motion.div
-                className="w-6 h-6 rounded-full flex items-center justify-center shadow-lg"
-                layout // Use default layout for the magical switch effect
-                transition={spring}
-                style={{
-                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.4)'
-                }}
+        // FIX #1: Isolate this component's animation from the nav underline
+        <LayoutGroup>
+            <div
+                onClick={toggleTheme}
+                className={`flex items-center w-16 h-8 p-1 rounded-full cursor-pointer relative transition-colors duration-300 ease-in-out border border-transparent dark:border-white/10 ${
+                    isDark ? 'bg-royal-blue-dark/50 justify-end' : 'bg-yellow-400/50 justify-start'
+                }`}
             >
-                <AnimatePresence mode="wait" initial={false}>
-                    <motion.div
-                        key={isDark ? "moon" : "sun"}
-                        initial={{ y: -20, opacity: 0, rotate: -90 }}
-                        animate={{ y: 0, opacity: 1, rotate: 0 }}
-                        exit={{ y: 20, opacity: 0, rotate: 90 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        {isDark ? (
-                            <Moon size={14} className="text-slate-200" />
-                        ) : (
-                            <Sun size={14} className="text-yellow-600" />
-                        )}
-                    </motion.div>
-                </AnimatePresence>
-            </motion.div>
-        </div>
+                <motion.div
+                    className="w-6 h-6 rounded-full flex items-center justify-center shadow-lg"
+                    layout
+                    transition={spring}
+                    style={{
+                      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.4)'
+                    }}
+                >
+                    <AnimatePresence mode="wait" initial={false}>
+                        <motion.div
+                            key={isDark ? "moon" : "sun"}
+                            initial={{ y: -20, opacity: 0, rotate: -90 }}
+                            animate={{ y: 0, opacity: 1, rotate: 0 }}
+                            exit={{ y: 20, opacity: 0, rotate: 90 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            {isDark ? (
+                                <Moon size={14} className="text-slate-200" />
+                            ) : (
+                                <Sun size={14} className="text-yellow-600" />
+                            )}
+                        </motion.div>
+                    </AnimatePresence>
+                </motion.div>
+            </div>
+        </LayoutGroup>
     );
 };
 
 
-// ===== CORE BUSINESS LOGIC: Header Component (No other changes needed) =====
+// ===== CORE BUSINESS LOGIC: Header Component =====
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -114,19 +117,23 @@ const Header = () => {
           </Link>
           
           <nav className="hidden md:flex items-center justify-center">
-            <ul className="flex items-center gap-x-2 lg:gap-x-4">
-              {navLinks.map((link) => (
-                <li key={link.name}>
-                  <NavItem href={link.href} name={link.name} />
-                </li>
-              ))}
-            </ul>
+            {/* FIX #1: Isolate nav underline animation */}
+            <LayoutGroup>
+              <ul className="flex items-center gap-x-2 lg:gap-x-4">
+                {navLinks.map((link) => (
+                  <li key={link.name}>
+                    <NavItem href={link.href} name={link.name} />
+                  </li>
+                ))}
+              </ul>
+            </LayoutGroup>
           </nav>
           
-          <div className="flex items-center gap-4">
+          {/* FIX #3: Ensure vertical alignment for mobile icons */}
+          <div className="flex items-center gap-4 h-8">
             <ThemeToggleButton />
             
-            <div className="md:hidden z-50">
+            <div className="md:hidden z-50 flex items-center h-full">
               <button onClick={toggleMenu} className="relative w-[30px] h-[22px]" aria-label="Toggle menu">
                 <motion.div className="absolute left-0 w-full h-[3px] bg-foreground rounded-full" variants={topBarVariants} animate={isOpen ? "open" : "closed"} />
                 <motion.div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[3px] bg-foreground rounded-full" variants={middleBarVariants} animate={isOpen ? "open" : "closed"} />
@@ -137,6 +144,7 @@ const Header = () => {
         </div>
       </header>
 
+      {/* --- Mobile Menu --- */}
       <AnimatePresence>
         {isOpen && (
           <motion.div className="fixed inset-0 z-40 md:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
