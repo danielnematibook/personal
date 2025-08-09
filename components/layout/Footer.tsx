@@ -1,52 +1,79 @@
 // ===== IMPORTS & DEPENDENCIES =====
 "use client";
 import Link from "next/link";
-import Image from "next/image";
+import { motion } from "framer-motion";
 
 // ===== CONFIGURATION & CONSTANTS =====
-// This array holds all the social media link data, making it easy to manage and update.
+// We now provide the hex color directly for inline styling.
 const socialLinks = [
-    { name: "Instagram", href: "https://instagram.com/danielnemati", icon: "/assets/icons/instagram.svg", color: "text-[#E1306C]", glow: "hover:text-glow-instagram" },
-    { name: "Telegram", href: "https://t.me/danielnemati", icon: "/assets/icons/telegram.svg", color: "text-[#229ED9]", glow: "hover:text-glow-telegram" },
-    { name: "YouTube", href: "https://www.youtube.com/channel/UCavOuqZO1uuOwxMW-6lOKxg", icon: "/assets/icons/youtube.svg", color: "text-[#FF0000]", glow: "hover:text-glow-youtube" },
-    { name: "Spotify", href: "https://open.spotify.com/artist/181tewJQfyOyyqJtMU7mq9", icon: "/assets/icons/spotify.svg", color: "text-[#1DB954]", glow: "hover:text-glow-spotify" },
-    { name: "SoundCloud", href: "https://soundcloud.com/daniel_nemati", icon: "/assets/icons/soundcloud.svg", color: "text-[#FF5500]", glow: "hover:text-glow-soundcloud" },
-    { name: "Apple Music", href: "https://music.apple.com/us/artist/daniel-nemati/1584787895", icon: "/assets/icons/applemusic.svg", color: "text-[#FB2A42]", glow: "hover:text-glow-applemusic" },
+  { name: "Instagram", href: "https://instagram.com/danielnemati", icon: "/assets/icons/instagram.svg", color: "#E1306C" },
+  { name: "Telegram", href: "https://t.me/danielnemati", icon: "/assets/icons/telegram.svg", color: "#229ED9" },
+  { name: "YouTube", href: "https://www.youtube.com/channel/UCavOuqZO1uuOwxMW-6lOKxg", icon: "/assets/icons/youtube.svg", color: "#FF0000" },
+  { name: "Spotify", href: "https://open.spotify.com/artist/181tewJQfyOyyqJtMU7mq9", icon: "/assets/icons/spotify.svg", color: "#1DB954" },
+  { name: "SoundCloud", href: "https://soundcloud.com/daniel_nemati", icon: "/assets/icons/soundcloud.svg", color: "#FF5500" },
+  { name: "Apple Music", href: "https://music.apple.com/us/artist/daniel-nemati/1584787895", icon: "/assets/icons/applemusic.svg", color: "#FB2A42" },
 ];
 
+const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } };
+const itemVariants = { hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } };
+
 // ===== CORE BUSINESS LOGIC: Footer Component =====
-// This component renders the site's footer, including social links and copyright info.
-// It uses the centralized `.glass-ui` class for its styling.
 const Footer = () => {
   return (
-    <footer id="footer" className="relative mt-24 py-8 glass-ui">
+    <footer id="footer" className="relative mt-24 py-12 glass-ui rounded-t-2xl">
       <div className="container mx-auto text-center text-foreground/80">
-        <h3 className="text-2xl font-bold mb-6 tracking-wider text-royal-gold-light">
+        <motion.h3 
+          className="text-2xl font-bold mb-8 tracking-wider text-royal-gold-light"
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
+        >
           Follow My Journey
-        </h3>
-        <div className="flex justify-center items-center space-x-6 md:space-x-8 mb-8">
+        </motion.h3>
+        
+        <motion.div 
+          className="flex justify-center items-center gap-x-4 md:gap-x-6 mb-10"
+          variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}
+        >
           {socialLinks.map((social) => (
-            <Link 
-              key={social.name} 
-              href={social.href} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              title={social.name}
-            >
-              <div className={`w-10 h-10 transition-transform duration-300 ease-in-out hover:scale-125 ${social.color} ${social.glow}`}>
-                <Image 
-                  src={social.icon} 
-                  alt={social.name} 
-                  width={40} 
-                  height={40} 
-                />
-              </div>
-            </Link>
+            <motion.div key={social.name} variants={itemVariants}>
+              <Link 
+                href={social.href} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                title={social.name}
+                className="group"
+              >
+                <div 
+                  className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-white/10"
+                  style={{ '--glow-color': social.color } as React.CSSProperties}
+                >
+                  <div
+                    className="w-8 h-8 transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:icon-glow"
+                    style={{
+                      // --- FINAL GUARANTEED FIX ---
+                      // We apply the background color directly via inline style
+                      backgroundColor: social.color, 
+                      maskImage: `url(${social.icon})`,
+                      maskSize: 'contain',
+                      maskPosition: 'center',
+                      maskRepeat: 'no-repeat',
+                      WebkitMaskImage: `url(${social.icon})`,
+                      WebkitMaskSize: 'contain',
+                      WebkitMaskPosition: 'center',
+                      WebkitMaskRepeat: 'no-repeat',
+                    }}
+                  />
+                </div>
+              </Link>
+            </motion.div>
           ))}
-        </div>
-        <p className="text-sm text-foreground/60">
+        </motion.div>
+        
+        <motion.p 
+            className="text-sm text-foreground/60"
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}
+        >
           &copy; {new Date().getFullYear()} Daniel Nemati. All Rights Reserved.
-        </p>
+        </motion.p>
       </div>
     </footer>
   );

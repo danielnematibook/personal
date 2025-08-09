@@ -73,4 +73,13 @@
     opacity: 1;
     transform: scale(1.1);
   }
+
+  /* --- FINAL, CORRECTED Icon Glow Effect --- */
+  /*
+    By defining this with @apply, we turn it into a proper utility class
+    that can be used with variants like `group-hover:`.
+  */
+  .icon-glow {
+    @apply filter drop-shadow-[0_0_8px_var(--glow-color)];
+  }
 }
