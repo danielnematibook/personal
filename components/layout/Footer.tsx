@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 // ===== CONFIGURATION & CONSTANTS =====
-// We now provide the hex color directly for inline styling.
+// We provide the hex color for both the background color and the glow effect.
 const socialLinks = [
   { name: "Instagram", href: "https://instagram.com/danielnemati", icon: "/assets/icons/instagram.svg", color: "#E1306C" },
   { name: "Telegram", href: "https://t.me/danielnemati", icon: "/assets/icons/telegram.svg", color: "#229ED9" },
@@ -44,13 +44,13 @@ const Footer = () => {
               >
                 <div 
                   className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-white/10"
+                  // The custom property is now used by the icon-glow class
                   style={{ '--glow-color': social.color } as React.CSSProperties}
                 >
                   <div
+                    // The `group-hover:icon-glow` class is the key to applying the filter on hover
                     className="w-8 h-8 transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:icon-glow"
                     style={{
-                      // --- FINAL GUARANTEED FIX ---
-                      // We apply the background color directly via inline style
                       backgroundColor: social.color, 
                       maskImage: `url(${social.icon})`,
                       maskSize: 'contain',

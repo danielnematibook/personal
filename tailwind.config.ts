@@ -1,6 +1,6 @@
 // ===== IMPORTS & DEPENDENCIES =====
 import type { Config } from "tailwindcss";
-const plugin = require("tailwindcss/plugin");
+import plugin from "tailwindcss/plugin";
 
 // ===== CONFIGURATION & CONSTANTS =====
 const config: Config = {
@@ -60,17 +60,14 @@ const config: Config = {
   },
   plugins: [
     require("tailwindcss-animate"),
-    // This plugin is correctly configured.
-    plugin(function({ addUtilities, theme }: { addUtilities: any, theme: any }) {
-      const glowUtilities = {
-        '.text-glow-instagram': { textShadow: '0 0 10px #E1306C, 0 0 20px #E1306C' },
-        '.text-glow-telegram': { textShadow: '0 0 10px #229ED9, 0 0 20px #229ED9' },
-        '.text-glow-youtube': { textShadow: '0 0 10px #FF0000, 0 0 20px #FF0000' },
-        '.text-glow-spotify': { textShadow: '0 0 10px #1DB954, 0 0 20px #1DB954' },
-        '.text-glow-soundcloud': { textShadow: '0 0 10px #FF5500, 0 0 20px #FF5500' },
-        '.text-glow-applemusic': { textShadow: '0 0 10px #FB2A42, 0 0 20px #FB2A42' },
-      };
-      addUtilities(glowUtilities, ['hover']);
+
+    // --- FINAL & TYPE-SAFE Glow Plugin ---
+    plugin(function ({ addUtilities }: { addUtilities: (utilities: any) => void }) {
+      addUtilities({
+        '.icon-glow': {
+          filter: 'drop-shadow(0 0 8px var(--glow-color))',
+        },
+      })
     }),
   ],
 };

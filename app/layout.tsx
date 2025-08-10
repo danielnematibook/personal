@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "./providers";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import CookieConsent from "@/components/ui/CookieConsent"; // Import the new component
 import "./globals.css";
 
 // ===== CONFIGURATION & CONSTANTS =====
@@ -17,8 +18,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // lang="fa" and dir="rtl" are set for Persian as the primary language.
-  // suppressHydrationWarning is necessary when using next-themes.
   return (
     <html lang="fa" dir="rtl" suppressHydrationWarning>
       <body className="font-sans">
@@ -33,6 +32,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <CookieConsent /> {/* Add the component here */}
         </ThemeProvider>
       </body>
     </html>
