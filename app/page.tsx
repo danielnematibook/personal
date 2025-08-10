@@ -1,9 +1,8 @@
 "use client";
-
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-// REFINEMENT: A standard, softer transition for reuse
+// A standard, softer transition for reuse
 const smoothFadeUp = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
@@ -15,7 +14,6 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Section 1: Hero */}
-      {/* REFINEMENT: Wrapper div to round the image corners */}
       <div className="relative h-[90vh] md:h-screen w-full -mt-24 overflow-hidden rounded-b-2xl">
         <motion.div 
             className="w-full h-full"
@@ -39,6 +37,7 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
             >
+              {/* --- Reverted to static text --- */}
               <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-foreground drop-shadow-lg">
                 دانیال نعمتی
               </h1>
@@ -52,7 +51,6 @@ export default function HomePage() {
       {/* Section 2: Biography */}
       <section id="biography" className="py-20 md:py-32 container mx-auto px-6">
         <motion.div
-          // REFINEMENT: Using the reusable animation object
           {...smoothFadeUp}
           className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center"
         >
@@ -67,6 +65,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="md:col-span-2 text-center md:text-right">
+            {/* --- Reverted to static text --- */}
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-royal-gold-light">
               بیوگرافی
             </h2>

@@ -1,0 +1,26 @@
+// ===== IMPORTS & DEPENDENCIES =====
+import { MetadataRoute } from 'next';
+
+// ===== CORE LOGIC: Sitemap Generation =====
+// This file generates the sitemap.xml for your website.
+// It lists all the important pages you want search engines to crawl and index.
+export default function sitemap(): MetadataRoute.Sitemap {
+  // IMPORTANT: Replace with your actual domain name after deployment
+  const baseUrl = 'https://www.danielnemati.ir';
+
+  // List of all your pages
+  const routes = [
+    '/',
+    '/music',
+    '/books',
+    '/graphics',
+    '/privacy-policy',
+  ];
+
+  return routes.map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date().toISOString(), // Automatically set the last modified date to today
+    changeFrequency: 'monthly', // How often the content of this page is expected to change
+    priority: route === '/' ? 1 : 0.8, // Give the homepage the highest priority
+  }));
+}

@@ -8,6 +8,7 @@ import { useTheme } from "next-themes";
 import { usePathname } from 'next/navigation';
 
 // ===== CONFIGURATION & CONSTANTS =====
+// --- Reverted to static, single-language array ---
 const navLinks = [
   { name: "خانه", href: "/" },
   { name: "موزیک و آلبوم‌ها", href: "/music" },
@@ -19,6 +20,7 @@ const navLinks = [
 // ===== REUSABLE NavItem COMPONENT =====
 const NavItem = ({ href, name }: { href: string; name:string }) => {
   const pathname = usePathname();
+  // Simplified isActive logic for single language
   const isActive = pathname === href;
 
   return (
@@ -100,17 +102,13 @@ const Header = () => {
 
   return (
     <>
-      {/* --- FINAL POLISHED HEADER --- */}
-      {/* Now floats, has margin, and is fully rounded */}
       <header className="fixed top-4 inset-x-4 z-50 glass-ui rounded-2xl">
         <div className="container mx-auto flex items-center justify-between h-14 px-4">
           
-          {/* Left Side: Logo */}
           <Link href="/" className="flex items-center text-xl md:text-2xl font-bold tracking-wider text-royal-gold">
             DANIEL NEMATI
           </Link>
           
-          {/* Center: Desktop Navigation */}
           <nav className="hidden md:flex items-center justify-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <LayoutGroup>
               <ul className="flex items-center gap-x-2 lg:gap-x-4">
@@ -123,7 +121,6 @@ const Header = () => {
             </LayoutGroup>
           </nav>
           
-          {/* Right Side: Icons */}
           <div className="flex items-center justify-end gap-4">
             <ThemeToggleButton />
             

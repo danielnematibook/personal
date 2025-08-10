@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "./providers";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import CookieConsent from "@/components/ui/CookieConsent"; // Import the new component
+import CookieConsent from "@/components/ui/CookieConsent";
 import "./globals.css";
 
 // ===== CONFIGURATION & CONSTANTS =====
@@ -28,11 +28,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <main className="pt-20">
+          <main className="pt-20"> 
             {children}
           </main>
           <Footer />
-          <CookieConsent /> {/* Add the component here */}
+          <CookieConsent />
         </ThemeProvider>
       </body>
     </html>
