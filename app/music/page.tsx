@@ -1,10 +1,12 @@
 // ===== IMPORTS & DEPENDENCIES =====
 "use client";
-import { motion, Variants } from "framer-motion"; // Import Variants type for strong typing
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { TypeAnimation } from "react-type-animation";
 import AlbumSlider from "@/components/sliders/AlbumSlider";
+// Import the shared animations
+import { staggerContainer, smoothFadeUp } from "@/lib/animations";
 
 // ===== CONFIGURATION & CONSTANTS =====
 const singles = [
@@ -18,36 +20,13 @@ const singles = [
   { name: "خون سبز من", year: 2024, img: "/assets/images/album-track8.webp" },
 ];
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1, // A bit faster stagger
-    },
-  },
-};
-
-// FINAL FIX: This is the definitive fix for the framer-motion type error.
-// The `ease` property is removed from the transition object.
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring", // Using spring for a more natural feel
-      stiffness: 100,
-    }
-  },
-};
-
 // ===== CORE BUSINESS LOGIC: Music Page =====
 export default function MusicPage() {
   return (
     <div className="container mx-auto px-6 py-12">
       {/* Section 1: Main Album */}
       <section className="text-center mb-24">
+        {/* ... (This section remains unchanged) ... */}
         <h1 className="text-4xl md:text-5xl font-black mb-4 text-royal-gold">
           آلبوم: از ملاقات تا تولدی دوباره
         </h1>
@@ -74,23 +53,23 @@ export default function MusicPage() {
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-royal-gold-light">
           تک آهنگ‌ها
         </h2>
+        {/* --- ANIMATION REFINED --- */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
-          variants={containerVariants}
+          variants={staggerContainer} // Use shared container animation
           initial="hidden"
-          whileInView="visible" // Animate when the section scrolls into view
-          viewport={{ once: true, amount: 0.2 }} // Trigger animation when 20% is visible
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
         >
           {singles.map((song) => (
-            <motion.div key={song.name} variants={itemVariants}>
+            <motion.div key={song.name} variants={smoothFadeUp}> {/* Use shared item animation */}
               <Link href="#" className="block group">
-                <div className="relative aspect-square rounded-20px overflow-hidden shadow-lg bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20">
+                <div className="relative aspect-square rounded-20px overflow-hidden shadow-lg glass-ui border-none">
                   <Image
                     src={song.img}
                     alt={song.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="transition-transform duration-500 ease-in-out group-hover:scale-110"
+                    fill
+                    className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-black/40 flex items-end p-4 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
                     <div>

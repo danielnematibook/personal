@@ -1,7 +1,8 @@
 // ===== IMPORTS & DEPENDENCIES =====
 "use client";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
+// --- STEP 1: Import the Autoplay module ---
+import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules';
 import Image from 'next/image';
 
 // Import Swiper styles
@@ -20,8 +21,6 @@ const albumTracks = [
 ];
 
 // ===== CORE BUSINESS LOGIC: AlbumSlider Component =====
-// A modern, 2025-style slider using Swiper.js with a coverflow effect.
-// It's designed to be responsive and visually appealing.
 const AlbumSlider = () => {
   return (
     <div className="w-full">
@@ -31,6 +30,12 @@ const AlbumSlider = () => {
         centeredSlides={true}
         slidesPerView={'auto'}
         loop={true}
+        // --- STEP 2: Add Autoplay configuration ---
+        autoplay={{
+          delay: 3000, // Time in ms between slides (3 seconds)
+          disableOnInteraction: false, // Autoplay will not be disabled after user interactions (swiping)
+          pauseOnMouseEnter: true, // Pauses autoplay when mouse is over the slider
+        }}
         coverflowEffect={{
           rotate: 50,
           stretch: 0,
@@ -40,7 +45,8 @@ const AlbumSlider = () => {
         }}
         pagination={{ clickable: true }}
         navigation={true}
-        modules={[EffectCoverflow, Pagination, Navigation]}
+        // --- STEP 3: Add Autoplay to the list of modules ---
+        modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
         className="mySwiper w-full py-12"
       >
         {albumTracks.map((track, index) => (
@@ -49,8 +55,8 @@ const AlbumSlider = () => {
               <Image
                 src={track.src}
                 alt={track.title}
-                layout="fill"
-                objectFit="cover"
+                fill
+                className="object-cover"
               />
             </div>
           </SwiperSlide>

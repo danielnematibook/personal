@@ -1,12 +1,12 @@
-// ===== IMPORTS & DEPENDENCIES =====
 "use client";
+
 import { TypeAnimation } from "react-type-animation";
+import { motion } from "framer-motion";
 import BookSlider from "@/components/sliders/BookSlider";
 import PoemCard from "@/components/ui/PoemCard";
+import { staggerContainer, smoothFadeUp } from "@/lib/animations";
 
-// ===== CONFIGURATION & CONSTANTS =====
-// --- UPDATED with real poems ---
-// The `fullText` uses template literals (`) to easily handle multi-line strings.
+// --- Restored with your full poems ---
 const poems = [
   { 
     title: "زندون در زندون", 
@@ -21,7 +21,7 @@ const poems = [
 به دیدار تو خوشنودم، به گفتار تو خرسندم»
 
 مرا با آنکه می‌دانم، مسیرم تا تو بسیار است
-ولیکن عهد خویش نگه دارم، و دور ز اغیar است
+ولیکن عهد خویش نگه دارم، و دور ز اغیار است
 
 اگر روزی دلت ناگاه، مثال سرو خزان لرزید
 تو را آغوش من باز است ، تمام عمر بی تردید
@@ -201,11 +201,25 @@ export default function BooksPage() {
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-royal-gold-light">
           گزیده اشعار
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }} // Trigger animation when 10% is visible
+        >
           {poems.map((poem, index) => (
-            <PoemCard key={index} title={poem.title} preview={poem.preview} fullText={poem.fullText} />
+            // The PoemCard component is wrapped in a motion.div
+            // which handles the item-level animation.
+            <motion.div key={index} variants={smoothFadeUp}>
+              <PoemCard 
+                title={poem.title} 
+                preview={poem.preview} 
+                fullText={poem.fullText}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
     </div>
   );
